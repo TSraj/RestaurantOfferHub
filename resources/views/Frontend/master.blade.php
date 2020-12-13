@@ -86,7 +86,9 @@
             <li><a href="#mu-gallery">GALLERY</a></li>
             <li><a href="#mu-chef">RESTAURANTS</a></li> 
             <li><a href="#mu-contact">CONTACT</a></li> 
-            <li><a class="nav-link" href="{{ route('user.profile') }}" style="text-transform: uppercase;">{{ Auth::user()->name }}</a></li> 
+            @if(Auth::user()->type == 'restaurant')
+              <li><a class="nav-link" href="{{ route('user.profile') }}" style="text-transform: uppercase;">{{ Auth::user()->name }}</a></li> 
+            @endif
 
             {{-- <li>
                     <a class="nav-link" href="{{ route('profile') }}"
@@ -254,41 +256,20 @@
 
               <ul class="mu-counter-nav">
 
-                <li class="col-md-3 col-sm-3 col-xs-12">
-                  <div class="mu-single-counter">
-                    <span>Offers</span>
-                    <h3><span class="counter-value" data-count="15">0</span><sup>+</sup></h3>
-                    <p>Sultan's Dine</p>
-                    <button style="color: black">View Offers</button>
-                  </div>
-                </li>
+                @if (!empty($restaurants))
+                    @foreach($restaurants as $restaurant)
+                    
+                    <li class="col-md-3 col-sm-3 col-xs-12">
+                      <div class="mu-single-counter">
+                        <span>Offers</span>
+                        <h3><span class="counter-value" data-count="{{ $restaurant->offers->count() }}">0</span><sup>+</sup></h3>
+                        <p>{{ $restaurant->name }}</p>
+                        <button style="color: black" data-toggle="modal" data-target="#offer_modal_{{ $restaurant->id }}">View Offers</button>
+                      </div>
+                    </li>
+                  @endforeach
+                @endif
 
-                <li class="col-md-3 col-sm-3 col-xs-12">
-                  <div class="mu-single-counter">
-                    <span>Offers</span>
-                    <h3><span class="counter-value" data-count="7">0</span><sup>+</sup></h3>
-                    <p>Kacchi Bhai</p>
-                    <button style="color: black">View Offers</button>
-                  </div>
-                </li>
-
-                 <li class="col-md-3 col-sm-3 col-xs-12">
-                  <div class="mu-single-counter">
-                    <span>Offers</span>
-                     <h3><span class="counter-value" data-count="3">0</span><sup>+</sup></h3>
-                    <p>Chillox</p>
-                    <button style="color: black">View Offers</button>
-                  </div>
-                </li>
-
-                 <li class="col-md-3 col-sm-3 col-xs-12">
-                  <div class="mu-single-counter">
-                    <span>Offers</span>
-                    <h3><span class="counter-value" data-count="9">0</span><sup>+</sup></h3>
-                    <p>Hotel Al-Baraka</p>
-                    <button style="color: black">View Offers</button>
-                  </div>
-                </li>
 
               </ul>
 
@@ -878,27 +859,42 @@
 
               <div class="col-md-6">
                 <div class="mu-reservation-left">
-                  <form class="mu-reservation-form">
+                  <form class="mu-reservation-form" action="{{ route('user.reservation') }}" method="POST">
+                    @csrf
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">                       
-                          <input type="text" class="form-control" placeholder="Full Name">
+                          <input type="text" class="form-control" placeholder="Full Name" name="name" required>
                         </div>
                       </div>
                       <div class="col-md-12">
                         <div class="form-group">                        
-                          <input type="email" class="form-control" placeholder="Email">
+                          <input type="email" class="form-control" placeholder="Email" name="email" required>
                         </div>
                       </div>
                       <div class="col-md-12">
                         <div class="form-group">                        
-                          <input type="text" class="form-control" placeholder="Phone Number">
+                          <input type="text" class="form-control" placeholder="Phone Number" name="phone" required>
                         </div>
                       </div>
                       <div class="col-md-12">
                         <div class="form-group">
-                          <select class="form-control">
-                            <option value="0">How Many?</option>
+                          <select class="form-control" name="restaurant" required>
+                            <option value="">Select Restaurant</option>
+                            @if (!empty($restaurants))
+                            @foreach($restaurants as $restaurant)
+                            
+                              <option value="{{$restaurant->id}}">{{ $restaurant->name }}</option>
+                            @endforeach
+                            @endif
+                           
+                          </select>                      
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <select class="form-control" name="person_number" required>
+                            <option value="">How Many?</option>
                             <option value="1 Person">1 Person</option>
                             <option value="2 People">2 People</option>
                             <option value="3 People">3 People</option>
@@ -914,12 +910,12 @@
                       </div>
                       <div class="col-md-12">
                         <div class="form-group">
-                          <input type="text" class="form-control" id="datepicker" placeholder="Date">              
+                          <input type="text" class="form-control" id="datepicker" data-date-format='yyyy-mm-dd' placeholder="Date" name="date" required>              
                         </div>
                       </div>
                       <div class="col-md-12">
                         <div class="form-group">
-                          <textarea class="form-control" cols="30" rows="10" placeholder="Your Message"></textarea>
+                          <textarea class="form-control" cols="30" rows="10" placeholder="Your Message" name="msg" required></textarea>
                         </div>
                       </div>
                       <button type="submit" class="mu-readmore-btn">Make Reservation</button>
@@ -1465,6 +1461,58 @@
   </footer>
   <!-- End Footer -->
   
+
+
+  {{-- Modals --}}
+  <!-- Modal -->
+  @if (!empty($restaurants))
+  @foreach($restaurants as $restaurant)
+  
+    <div id="offer_modal_{{ $restaurant->id }}" class="modal fade" role="dialog">
+      <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Offers</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="mu-counter-area">
+    
+                  <ul class="mu-counter-nav">
+                    @if (!empty($restaurant->offers))
+                        @foreach($restaurant->offers as $offer)
+                        
+                        <li class="col-md-3 col-sm-3 col-xs-12">
+                          <div class="mu-single-counter">
+                            <span>Offers</span>
+                            <h3><span class="counter-value" data-count="{{ $offer->price }}">0</span></h3>
+                            <p>{{ $offer->name }}</p>
+                            <img src="{{ asset('uploads/'.$offer->img) }}" alt="" style="max-height: 100px;">
+                          </div>
+                        </li>
+                      @endforeach
+                    @endif
+    
+    
+                  </ul>
+    
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  @endforeach
+  @endif
   <!-- jQuery library -->
   <script src="{{ asset('frontend/js/jquery.min.js') }}"></script>  
   <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -1482,6 +1530,10 @@
  
   <!-- Custom js -->
   <script src="{{ asset('frontend/js/custom.js') }}""></script> 
-
+  @if(session()->has('success'))
+  <script>
+    alert("{{ session()->get('success') }}");
+    </script>  
+    @endif
   </body>
 </html>

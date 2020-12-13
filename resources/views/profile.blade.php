@@ -82,9 +82,11 @@
             <li><a href="{{ route('user.home') }}">HOME</a></li>
             <li><a href="#mu-counter">OUR OFFERS</a></li>                       
                 
-            <li><a href="#mu-reservation">ADD OFFER</a></li>                           
+            <li><a href="#mu-reservation">ADD OFFER</a></li>   
+            
+            
           <li><a href="{{ route('user.profile') }}" style="text-transform: uppercase;">{{ Auth::user()->name }}</a></li> 
-
+          <li><a href="#mu-contact">RESERVATIONS</a></li>                         
             {{-- <li>
                     <a class="nav-link" href="{{ route('profile') }}"
                 onclick="event.preventDefault();
@@ -178,9 +180,7 @@
     <div class="mu-title">
       <span class="mu-subtitle">Discover</span>
       <h2>CURRENT OFFERS</h2>
-      @if(session()->has('success'))
-        <p class="text-success">{{ session()->get('success') }}</p>
-      @endif
+     
     </div>
     <div class="mu-counter-overlay">
       <div class="container">
@@ -196,7 +196,7 @@
                     <div class="mu-single-counter">
                         <span>{{ $offer->name }}</span>
                         <p>{{ Auth::user()->name }}</p>
-
+                        <p>{{ $offer->price }}</p>
                         <img src="{{ asset('uploads/'.$offer->img) }}" alt="" style="max-height: 100px;">
                     </div>
                     </li>
@@ -236,12 +236,17 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">                       
-                          <input type="text" class="form-control" name="name" placeholder=" Name">
+                          <input type="text" class="form-control" name="name" placeholder=" Name" required>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">                       
+                          <input type="number" class="form-control" name="price" placeholder=" Price" required min='1'>
                         </div>
                       </div>
                       <div class="col-md-12">
                         <div class="form-group">                        
-                          <input type="file" name="img" accept="image/all" class="form-control" placeholder="IMG">
+                          <input type="file" name="img" accept="image/*" class="form-control" placeholder="IMG" required>
                         </div>
                       </div>
                       
@@ -258,7 +263,62 @@
   </section>  
   <!-- End Reservation section -->
 
- 
+ <!-- Start Contact section -->
+ <section id="mu-contact">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="mu-contact-area">
+
+          <div class="mu-title">
+            <span class="mu-subtitle">Messages</span>
+            <h2>Reservations</h2>
+          </div>
+
+          <div class="mu-contact-content">
+            <div class="row">
+
+              <div class="col-md-12">
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Person</th>
+                      <th>Date</th>
+                      <th>Message</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @if (!empty($messages))
+                        @foreach ($messages as $message)
+                            <tr>
+                              <td>{{ $loop->iteration }}</td>
+                              <td>{{ $message->name }}</td>
+                              <td>{{ $message->email }}</td>
+                              <td>{{ $message->phone }}</td>
+                              <td>{{ $message->person_number }}</td>
+                              <td>{{ $message->date }}</td>
+                              <td>{!! $message->msg !!}</td>
+                            </tr>
+                        @endforeach
+                    @endif
+                  </tbody>
+                </table>
+              </div>
+
+              
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Contact section -->
   <!-- Start Map section -->
   <section id="mu-map">
     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d9207.358598888495!2d-85.64847801496286!3d30.183918972289003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0000000000000000%3A0x2320479d70eb6202!2sDillard&#39;s!5e0!3m2!1sbn!2sbd!4v1462359735720" width="100%" height="100%" frameborder="0"allowfullscreen></iframe>
@@ -304,7 +364,11 @@
   <script type="text/javascript" src="{{ asset('frontend/js/app.js') }}"></script>
  
   <!-- Custom js -->
-  <script src="{{ asset('frontend/js/custom.js') }}""></script> 
-
+  <script src="{{ asset('frontend/js/custom.js') }}"></script> 
+  @if(session()->has('success'))
+    <script>
+    alert("{{ session()->get('success') }}");
+    </script>  
+  @endif
   </body>
 </html>

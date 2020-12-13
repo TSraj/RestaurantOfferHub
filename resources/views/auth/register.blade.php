@@ -61,6 +61,20 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <label for="" class="col-md-4  col-form-label text-md-right">User Type</label>
+                            <div class="col-md-6">
+                                <label for="user">User</label>
+                                <input type="radio" class="" name="user_type" value="user" required id="user">
+                            </div>
+                            <div class="col-md-4"></div>
+                            <div class="col-md-6 ">
+                                <label for="restaurant">Restaurant</label>
+                                <input type="radio" name="user_type" value="restaurant" required id="restaurant">
+                            </div>
+                            
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
