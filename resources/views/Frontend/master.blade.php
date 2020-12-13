@@ -69,7 +69,7 @@
           <!-- LOGO -->       
 
            <!--  Text based logo  -->
-          {{-- <a class="navbar-brand" href="index.html">RO<span>H</span></a>  --}}
+          <a class="navbar-brand" href="index.html">RO<span>H</span></a> 
           
 
 		      <!--  Image based logo  -->
