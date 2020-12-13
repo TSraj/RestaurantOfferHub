@@ -69,10 +69,11 @@
           <!-- LOGO -->       
 
            <!--  Text based logo  -->
-          <a class="navbar-brand" href="index.html">RO<span>H</span></a> 
+          {{-- <a class="navbar-brand" href="index.html">RO<span>H</span></a>  --}}
+          
 
 		      <!--  Image based logo  -->
-          <!-- <a class="navbar-brand" href="index.html"><img src="{{ asset('frontend/img/') }}/logo.png" alt="Logo img"></a>  -->
+          {{-- <a class="navbar-brand" href="index.html"><img src="{{ asset('frontend/img/') }}/logohome/logo3.png" alt="Logo img"></a> --}}
          
 
         </div>
@@ -80,11 +81,25 @@
           <ul id="top-menu" class="nav navbar-nav navbar-right mu-main-nav">
             <li><a href="#">HOME</a></li>
             <li><a href="#mu-about-us">ABOUT ROH</a></li>                       
-            <li><a href="#mu-restaurant-menu">OFFERS</a></li>                       
+            <li><a href="#mu-counter">OFFERS</a></li>                       
             <li><a href="#mu-reservation">RESERVATION</a></li>                       
             <li><a href="#mu-gallery">GALLERY</a></li>
             <li><a href="#mu-chef">RESTAURANTS</a></li> 
             <li><a href="#mu-contact">CONTACT</a></li> 
+            <li><a class="nav-link" href="{{ route('user.profile') }}" style="text-transform: uppercase;">{{ Auth::user()->name }}</a></li> 
+
+            {{-- <li>
+                    <a class="nav-link" href="{{ route('profile') }}"
+                onclick="event.preventDefault();
+                              document.getElementById('profile-form').submit();">
+                              <i class="nav-icon far fa-circle text-danger"></i>
+                 {{ __('PROFILE') }}
+             </a>
+
+             <form id="profile-form" action="{{ route('profile') }}" method="POST" style="display: none;">
+                 @csrf
+             </form>
+            </li> --}}
             {{-- <li><a href="#mu-contact">LOG OUT</a> --}}
               <li>
                 <a class="nav-link" href="{{ route('logout') }}"
@@ -210,7 +225,8 @@
                     <li>Restaurants can post different types of offers time to time.</li>
                     <li>User will get notified when their subscribed restaurants post new offer.</li>
                     <li>Users will be able to order food what they are choosing.</li>                    
-                    <li>Food vlogger will able to post their food review videos & registered user can stream it.</li>
+                    <li>Food vlogger will able to post their food review videos & 
+                      registered user can stream it.</li>
                   </ul>
                   <p></p>  
                 </div>
@@ -224,11 +240,12 @@
   <!-- End About us -->
 
   <!-- Start Counter Section -->
-  <div class="mu-title">
-    <span class="mu-subtitle">Discover</span>
-    <h2>CURRENT OFFERS</h2>
-  </div>
+  
   <section id="mu-counter">
+    <div class="mu-title">
+      <span class="mu-subtitle">Discover</span>
+      <h2>CURRENT OFFERS</h2>
+    </div>
     <div class="mu-counter-overlay">
       <div class="container">
         <div class="row">
@@ -242,6 +259,7 @@
                     <span>Offers</span>
                     <h3><span class="counter-value" data-count="15">0</span><sup>+</sup></h3>
                     <p>Sultan's Dine</p>
+                    <button style="color: black">View Offers</button>
                   </div>
                 </li>
 
@@ -250,6 +268,7 @@
                     <span>Offers</span>
                     <h3><span class="counter-value" data-count="7">0</span><sup>+</sup></h3>
                     <p>Kacchi Bhai</p>
+                    <button style="color: black">View Offers</button>
                   </div>
                 </li>
 
@@ -258,6 +277,7 @@
                     <span>Offers</span>
                      <h3><span class="counter-value" data-count="3">0</span><sup>+</sup></h3>
                     <p>Chillox</p>
+                    <button style="color: black">View Offers</button>
                   </div>
                 </li>
 
@@ -266,6 +286,7 @@
                     <span>Offers</span>
                     <h3><span class="counter-value" data-count="9">0</span><sup>+</sup></h3>
                     <p>Hotel Al-Baraka</p>
+                    <button style="color: black">View Offers</button>
                   </div>
                 </li>
 

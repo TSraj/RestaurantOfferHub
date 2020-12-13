@@ -441,6 +441,17 @@
               </p>
             </a>
           </li>
+
+          <li class="nav-item">
+            <a href="pages/gallery.html" class="nav-link">
+              {{-- <i class="nav-icon far fa-image"></i> --}}
+              <p>
+                View All User
+              </p>
+            </a>
+          </li>
+
+
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon far fa-envelope"></i>
@@ -717,7 +728,7 @@
     <strong>Copyright &copy; 2020 <a href="http://adminlte.io">Restaurant Offer Hub</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 0.0.1
+      <b>Version</b> 0.0.7
     </div>
   </footer>
 

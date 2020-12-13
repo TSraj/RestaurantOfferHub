@@ -15,10 +15,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
- Route::get('/home','TemplateController@index');
-//Route::get('/master', 'TemplateController@index');
+Route::get('reservation','ReservationFormController@create');
 
+Auth::routes();
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/home','TemplateController@index')->name('user.home');
+    //Route::get('/master', 'TemplateController@index');
+    Route::get('profile','TemplateController@profile')->name('user.profile');
+    Route::post('add-offer','TemplateController@addOffer')->name('user.add-offer');
+});
 Route::prefix('admin')->group(function(){
     Route::get('/login','Auth\AdminLoginController@showLoginForm')->name('admin.login');
     Route::post('/login','Auth\AdminLoginController@login')->name('admin.login.submit');
